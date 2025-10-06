@@ -10,6 +10,7 @@
       theme: {
         extend: {
           animation: {
+            // Se mantiene la animación original
             'bounce-slow': 'bounce 2s infinite',
             'pulse-slow': 'pulse 3s infinite',
           }
@@ -20,7 +21,6 @@
 </head>
 <body class="min-h-screen bg-gradient-to-br from-cyan-600 via-blue-600 to-emerald-800 p-4">
   <div class="max-w-7xl mx-auto bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-6 md:p-8">
-    <!-- Header -->
     <div class="text-center mb-8">
       <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-cyan-600 to-emerald-500 bg-clip-text text-transparent mb-4">
         🦸‍♂️ Generador de Equipos 🦸‍♀️
@@ -28,9 +28,7 @@
       <p class="text-gray-600 text-lg">Crea y gestiona equipos épicos de superhéroes</p>
     </div>
 
-    <!-- Controls Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-      <!-- Team Management -->
       <div class="bg-gradient-to-r from-sky-50 to-cyan-50 p-6 rounded-2xl border-2 border-sky-100 hover:shadow-lg transition-all duration-300">
         <h3 class="text-xl font-bold text-sky-700 mb-4 flex items-center">
           <span class="mr-2">📊</span> Gestión de Equipos
@@ -51,7 +49,6 @@
         </div>
       </div>
 
-      <!-- Filters -->
       <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl border-2 border-green-100 hover:shadow-lg transition-all duration-300">
         <h3 class="text-xl font-bold text-emerald-700 mb-4 flex items-center">
           <span class="mr-2">🔍</span> Filtros
@@ -69,14 +66,13 @@
           <select id="levelFilter" onchange="filterHeroes()" 
                   class="w-full p-3 border-2 border-emerald-200 rounded-xl focus:border-emerald-400 focus:outline-none bg-white shadow-sm">
             <option value="">Todos los niveles</option>
-            <option value="high">🔥 Alto (80+)</option>
-            <option value="medium">⚖️ Medio (50-79)</option>
+            <option value="elite">👑 Élite (85+)</option> <option value="high">🔥 Alto (70-84)</option>
+            <option value="medium">⚖️ Medio (50-69)</option>
             <option value="low">🌱 Bajo (0-49)</option>
           </select>
         </div>
       </div>
 
-      <!-- Advanced Actions -->
       <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-2xl border-2 border-indigo-100 hover:shadow-lg transition-all duration-300">
         <h3 class="text-xl font-bold text-indigo-700 mb-4 flex items-center">
           <span class="mr-2">⚡</span> Acciones Avanzadas
@@ -98,17 +94,14 @@
       </div>
     </div>
 
-    <!-- Team Summary -->
     <div id="teamSummary" class="hidden mb-8">
       <div class="bg-gradient-to-r from-cyan-100 to-emerald-100 p-6 rounded-2xl border-2 border-cyan-200 shadow-lg">
         <div id="teamSummaryContent"></div>
       </div>
     </div>
 
-    <!-- Heroes Grid -->
     <div id="heroGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8"></div>
 
-    <!-- Output Console -->
     <div id="output" class="hidden">
       <div class="bg-gray-900 text-emerald-400 p-6 rounded-2xl font-mono shadow-2xl border border-gray-700">
         <div class="flex items-center mb-3">
@@ -124,7 +117,6 @@
     </div>
   </div>
 
-  <!-- JavaScript -->
   <script>
     const HERO_DATABASE = [
       { name: "Capitán Rayo", power: "Fuerza", level: 95, origin: "Tierra", weakness: "Kriptonita", emoji: "⚡" },
@@ -132,7 +124,7 @@
       { name: "Flash Cósmico", power: "Velocidad", level: 88, origin: "Espacio", weakness: "Frío extremo", emoji: "💫" },
       { name: "Mente Maestra", power: "Telepatía", level: 82, origin: "Marte", weakness: "Metal", emoji: "🧠" },
       { name: "Águila Dorada", power: "Vuelo", level: 75, origin: "Atlántida", weakness: "Agua salada", emoji: "🦅" },
-      { name: "Furia Titánica", power: "Fuerza", level: 92, origin: "Olimpo", weakness: "Amor verdadero", emoji: "💪" },
+      { name: "Furia Titánica", power: "Fuerza", level: 99, origin: "Olimpo", weakness: "Amor verdadero", emoji: "💪" },
       { name: "Espectro Veloz", power: "Velocidad", level: 65, origin: "Dimensión X", weakness: "Gravedad", emoji: "👻" },
       { name: "Psíquico Supremo", power: "Telepatía", level: 89, origin: "Luna", weakness: "Emociones fuertes", emoji: "🌙" },
       { name: "Fantasma Plateado", power: "Invisibilidad", level: 71, origin: "Reino Fantasma", weakness: "Sal", emoji: "✨" },
@@ -141,19 +133,44 @@
 
     let currentTeam = [];
     let filteredHeroes = [...HERO_DATABASE];
+    const TEAM_STORAGE_KEY = 'superheroTeam'; // Clave para LocalStorage
 
     const getRandomHero = () => HERO_DATABASE[Math.floor(Math.random() * HERO_DATABASE.length)];
+    
     const generateTeamName = () => {
-      const adjectives = ['Invencibles', 'Legendarios', 'Supremos', 'Élite', 'Cósmicos', 'Místicos'];
-      const nouns = ['Guardianes', 'Vengadores', 'Protectores', 'Campeones', 'Defensores', 'Héroes'];
+      const adjectives = ['Invencibles', 'Legendarios', 'Supremos', 'Élite', 'Cósmicos', 'Místicos', 'Galácticos'];
+      const nouns = ['Guardianes', 'Vengadores', 'Protectores', 'Campeones', 'Defensores', 'Héroes', 'Titanes'];
       return `${adjectives[Math.floor(Math.random() * adjectives.length)]} ${nouns[Math.floor(Math.random() * nouns.length)]}`;
     };
 
+    // --- FUNCIONES DE PERSISTENCIA ---
+    const saveTeam = () => {
+      localStorage.setItem(TEAM_STORAGE_KEY, JSON.stringify(currentTeam));
+    };
+
+    const loadTeam = () => {
+      const storedTeam = localStorage.getItem(TEAM_STORAGE_KEY);
+      if (storedTeam) {
+        currentTeam = JSON.parse(storedTeam);
+        showOutput(`💾 Equipo cargado con ${currentTeam.length} miembros`);
+      } else {
+        showOutput(`⭐ ¡Bienvenido! Crea tu primer equipo.`);
+      }
+    };
+    // ----------------------------------
+
+    // --- LÓGICA DE ESTILOS Y COMPONENTES ---
+    const getLevelColors = (level) => {
+      if (level >= 85) return { bg: 'from-purple-600 to-indigo-600', text: 'text-white', badge: 'bg-red-500' };
+      if (level >= 70) return { bg: 'from-cyan-500 to-emerald-500', text: 'text-white', badge: 'bg-yellow-500' };
+      return { bg: 'from-sky-500 to-cyan-500', text: 'text-white', badge: 'bg-green-500' };
+    };
+
     const createHeroCard = (hero) => {
-      const levelColor = hero.level >= 80 ? 'from-cyan-500 to-emerald-500' : 
-                         hero.level >= 60 ? 'from-blue-500 to-indigo-500' : 
-                         'from-sky-500 to-cyan-500';
-      const borderColor = currentTeam.some(h => h.name === hero.name) ? 'border-emerald-400 ring-4 ring-emerald-200' : 'border-gray-200';
+      const isInTeam = currentTeam.some(h => h.name === hero.name);
+      const { bg } = getLevelColors(hero.level); 
+      
+      const borderColor = isInTeam ? 'border-purple-500 ring-4 ring-purple-200 animate-pulse-slow' : 'border-gray-200';
 
       return `
         <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 ${borderColor} border-2 p-6 cursor-pointer group"
@@ -161,7 +178,7 @@
           <div class="text-center mb-4">
             <div class="text-6xl mb-2 group-hover:animate-bounce-slow">${hero.emoji}</div>
             <h3 class="text-xl font-bold text-gray-800 mb-2">${hero.name}</h3>
-            <span class="inline-block bg-gradient-to-r ${levelColor} text-white px-4 py-2 rounded-full font-bold text-sm shadow-md">
+            <span class="inline-block bg-gradient-to-r ${bg} text-white px-4 py-2 rounded-full font-bold text-sm shadow-md">
               Nivel ${hero.level}
             </span>
           </div>
@@ -180,14 +197,16 @@
             </div>
           </div>
           <div class="mt-4 text-center">
-            <button class="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 transform group-hover:scale-110">
-              ${currentTeam.some(h => h.name === hero.name) ? '✅ En Equipo' : '➕ Añadir'}
+            <button class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 transform group-hover:scale-110">
+              ${isInTeam ? '✅ En Equipo' : '➕ Añadir'}
             </button>
           </div>
         </div>
       `;
     };
+    // ------------------------------------------------
 
+    // --- LÓGICA DE GESTIÓN DE EQUIPO ---
     const toggleHeroInTeam = (heroName) => {
       const hero = HERO_DATABASE.find(h => h.name === heroName);
       const heroIndex = currentTeam.findIndex(h => h.name === heroName);
@@ -198,6 +217,7 @@
       } else {
         addHeroToTeam(hero);
       }
+      saveTeam(); // Guardar después de modificar
       updateDisplay();
     };
 
@@ -205,6 +225,7 @@
       const heroExists = currentTeam.find(h => h.name === hero.name);
       if (!heroExists && currentTeam.length < 5) {
         currentTeam = [...currentTeam, hero];
+        saveTeam(); // Guardar después de modificar
         updateDisplay();
         showOutput(`✅ ${hero.name} añadido al equipo!`);
       } else if (currentTeam.length >= 5) {
@@ -214,27 +235,12 @@
       }
     };
 
-    const filterHeroes = () => {
-      const powerFilter = document.getElementById('powerFilter').value;
-      const levelFilter = document.getElementById('levelFilter').value;
-
-      filteredHeroes = HERO_DATABASE.filter(hero => {
-        const powerMatch = !powerFilter || hero.power === powerFilter;
-        const levelMatch = !levelFilter || checkLevelRange(hero.level, levelFilter);
-        return powerMatch && levelMatch;
-      });
-
+    const clearTeam = () => {
+      currentTeam = [];
+      localStorage.removeItem(TEAM_STORAGE_KEY);
       updateDisplay();
-      showOutput(`🔍 Filtrados: ${filteredHeroes.length} héroes encontrados`);
-    };
-
-    const checkLevelRange = (level, range) => {
-      switch(range) {
-        case 'high': return level >= 80;
-        case 'medium': return level >= 50 && level < 80;
-        case 'low': return level < 50;
-        default: return true;
-      }
+      document.getElementById('teamSummary').classList.add('hidden');
+      showOutput(`🗑️ Equipo limpiado`);
     };
 
     const calculateTeamStats = () => {
@@ -244,27 +250,17 @@
         avgPower: Math.round((stats.totalPower + hero.level) / currentTeam.length),
         maxPower: Math.max(stats.maxPower, hero.level),
         minPower: Math.min(stats.minPower, hero.level),
-        memberCount: stats.memberCount + 1
+        memberCount: currentTeam.length // Corregido: memberCount se calcula al final
       }), {
         totalPower: 0,
         avgPower: 0,
         maxPower: 0,
-        minPower: 100,
-        memberCount: 0
+        minPower: 100
       });
     };
+    // ------------------------------------
 
-    const findStrongestHero = () => {
-      const strongest = HERO_DATABASE.find(hero => 
-        hero.level === Math.max(...HERO_DATABASE.map(h => h.level))
-      );
-      if (strongest) {
-        const {name, level, power} = strongest;
-        showOutput(`💪 Héroe más fuerte: ${name} (Nivel ${level}, Poder: ${power})`);
-        addHeroToTeam(strongest);
-      }
-    };
-
+    // --- LÓGICA DE ACCIONES PRINCIPALES ---
     const generateRandomTeam = () => {
       currentTeam = [];
       const teamSize = Math.floor(Math.random() * 3) + 3;
@@ -277,22 +273,33 @@
         }
       }
       const teamName = generateTeamName();
+      saveTeam(); // Guardar equipo aleatorio
       updateDisplay();
-      showTeamSummary(teamName);
       showOutput(`🎲 ¡Equipo "${teamName}" generado con ${currentTeam.length} miembros!`);
     };
 
     const createSuperTeam = () => {
       const topHeroes = HERO_DATABASE
-        .filter(hero => hero.level >= 80)
+        .filter(hero => hero.level >= 85)
         .sort((a, b) => b.level - a.level)
         .slice(0, 4);
       currentTeam = [...topHeroes];
+      saveTeam(); // Guardar equipo elite
       updateDisplay();
-      showTeamSummary("Escuadrón Elite");
-      showOutput(`⭐ Equipo Elite creado con los 4 héroes más poderosos`);
+      showOutput(`⭐ Equipo Elite creado con los ${currentTeam.length} héroes más poderosos (Nivel 85+)`);
     };
 
+    const findStrongestHero = () => {
+      // Buscar el héroe más fuerte sin añadirlo automáticamente (UX mejorada)
+      const strongest = HERO_DATABASE.reduce((max, hero) => 
+        (hero.level > max.level ? hero : max), { level: -1, name: "Nadie" });
+
+      if (strongest.name !== "Nadie") {
+        const {name, level, power} = strongest;
+        showOutput(`💪 Héroe más fuerte encontrado: ${name} (Nivel ${level}, Poder: ${power}). ¡Añádelo con un click!`);
+      }
+    };
+    
     const analyzeCurrentTeam = () => {
       if (currentTeam.length === 0) {
         showOutput(`❌ No hay equipo para analizar. Genera uno primero.`);
@@ -333,14 +340,35 @@ ${currentTeam
 📉 Nivel Mín: ${stats.minPower}`;
       showOutput(statsText);
     };
-
-    const clearTeam = () => {
-      currentTeam = [];
-      updateDisplay();
-      document.getElementById('teamSummary').classList.add('hidden');
-      showOutput(`🗑️ Equipo limpiado`);
+    // ------------------------------------
+    
+    // --- LÓGICA DE FILTROS ---
+    const checkLevelRange = (level, range) => {
+      switch(range) {
+        case 'elite': return level >= 85; // Nuevo rango
+        case 'high': return level >= 70 && level < 85;
+        case 'medium': return level >= 50 && level < 70;
+        case 'low': return level < 50;
+        default: return true;
+      }
     };
 
+    const filterHeroes = () => {
+      const powerFilter = document.getElementById('powerFilter').value;
+      const levelFilter = document.getElementById('levelFilter').value;
+
+      filteredHeroes = HERO_DATABASE.filter(hero => {
+        const powerMatch = !powerFilter || hero.power === powerFilter;
+        const levelMatch = !levelFilter || checkLevelRange(hero.level, levelFilter);
+        return powerMatch && levelMatch;
+      });
+
+      updateDisplay();
+      showOutput(`🔍 Filtrados: ${filteredHeroes.length} héroes encontrados`);
+    };
+    // ------------------------------------
+
+    // --- LÓGICA DE VISUALIZACIÓN ---
     const showOutput = (message) => {
       const output = document.getElementById('output');
       const outputContent = document.getElementById('outputContent');
@@ -352,24 +380,61 @@ ${currentTeam
       const summary = document.getElementById('teamSummary');
       const content = document.getElementById('teamSummaryContent');
       const stats = calculateTeamStats();
+      
+      if (!stats || stats.memberCount === 0) { // Asegurar que se oculte si el equipo está vacío
+          summary.classList.add('hidden');
+          return;
+      }
+      
+      // Detalle de miembros y barra de poder (max 500)
+      const teamMates = currentTeam.map(h => `${h.emoji} ${h.name}`).join(' | ');
+      const totalPowerBar = Math.min(100, Math.round(stats.totalPower / 500 * 100)); 
+
       summary.classList.remove('hidden');
       content.innerHTML = `
-        <h3 class="text-2xl font-bold text-emerald-700 mb-4">Equipo: ${teamName}</h3>
-        <p class="text-gray-700">👥 Miembros: ${stats.memberCount}</p>
-        <p class="text-gray-700">⚡ Poder Total: ${stats.totalPower}</p>
-        <p class="text-gray-700">📈 Promedio: ${stats.avgPower}</p>
-        <p class="text-gray-700">🏆 Máximo: ${stats.maxPower}</p>
-        <p class="text-gray-700">📉 Mínimo: ${stats.minPower}</p>
+        <h3 class="text-2xl font-bold text-emerald-700 mb-4 flex items-center">
+            <span class="mr-3">⭐</span> Equipo: ${teamName} 
+            <span class="ml-auto text-xl text-gray-500">${stats.memberCount}/5</span>
+        </h3>
+        <div class="space-y-3">
+            <div class="bg-gray-200 rounded-full h-4 mb-4" title="Poder Total: ${stats.totalPower}">
+                <div class="bg-gradient-to-r from-teal-400 to-cyan-500 h-4 rounded-full transition-all duration-500" 
+                     style="width: ${totalPowerBar}%"></div>
+            </div>
+            <p class="text-gray-700 font-semibold flex justify-between">
+                <span>⚡ Poder Total:</span>
+                <span class="text-teal-600 font-bold">${stats.totalPower}</span>
+            </p>
+            <p class="text-gray-700 flex justify-between">
+                <span>📈 Promedio:</span>
+                <span class="text-cyan-600">${stats.avgPower}</span>
+            </p>
+            <p class="text-gray-700 flex justify-between">
+                <span>🏆 Nivel Máximo:</span>
+                <span class="text-indigo-600">${stats.maxPower}</span>
+            </p>
+            <p class="mt-4 pt-4 border-t border-gray-300 text-sm overflow-x-auto whitespace-nowrap">
+                **Miembros:** ${teamMates}
+            </p>
+        </div>
       `;
     };
 
     const updateDisplay = () => {
       const heroGrid = document.getElementById('heroGrid');
       heroGrid.innerHTML = filteredHeroes.map(createHeroCard).join('');
+      // Mostrar el resumen del equipo con un nombre por defecto
+      showTeamSummary(currentTeam.length > 0 ? 'Equipo Actual' : 'No hay equipo');
+    };
+    // ------------------------------------
+
+    // --- PUNTO DE INICIO ---
+    const initialize = () => {
+        loadTeam();
+        updateDisplay();
     };
 
-    updateDisplay();
+    initialize();
   </script>
 </body>
 </html>
-
