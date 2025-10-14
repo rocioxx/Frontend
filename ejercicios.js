@@ -14,3 +14,15 @@ const numeros5 = [4,5,9,12,7];
 const primeroDiv3 = numeros5.find(n => n % 3 === 0);
 const indiceDiv3 = numeros5.findIndex(n => n % 3 === 0);
 
+const numeros6 = [2,4,6,8];
+let suma6 = 0;
+numeros6.forEach(n => suma6 += n);
+
+const numeros7 = [10,20,30,40,50,60];
+const primeros3 = numeros7.slice(0,3);
+const copia7 = [...numeros7];
+copia7.splice(-2, 2); // elimina los dos últimos
+
+const producto8 = { nombre: "Laptop", precio: 1000, stock: 5 };
+const claves8 = Object.keys(producto8);
+const valores8 = Object.values(producto8);
