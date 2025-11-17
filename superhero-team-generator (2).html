@@ -427,6 +427,43 @@ ${currentTeam
       showTeamSummary(currentTeam.length > 0 ? 'Equipo Actual' : 'No hay equipo');
     };
     // ------------------------------------
+    // --- FUNCIONES ASÍNCRONAS PARA CARGA PROGRESIVA ---
+
+// Función para simular sleep/pausa
+const sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+};
+
+// Función para generar la cuadrícula con retraso
+const generateProgressiveGrid = async () => {
+    const gridContainer = document.getElementById('progressiveGrid');
+    const colors = ['bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-purple-500'];
+    const totalCells = 20;
+    const size = 'w-10 h-10'; // Tamaño fijo para las celdas
+
+    gridContainer.innerHTML = ''; // Limpiar por si se llama de nuevo
+
+    showOutput(`⏳ Iniciando carga progresiva de ${totalCells} celdas...`);
+
+    for (let i = 0; i < totalCells; i++) {
+        // 1. Crear el nuevo elemento DIV (la celda)
+        const cell = document.createElement('div');
+        
+        // 2. Asignar clases de estilo (color y tamaño)
+        const colorClass = colors[i % colors.length];
+        cell.className = `${size} ${colorClass} transition-all duration-100 ease-in-out transform hover:scale-125`;
+        
+        // 3. Añadir el nodo al contenedor padre
+        gridContainer.appendChild(cell);
+        
+        // 4. Pausar la ejecución (simulando sleep)
+        await sleep(250);
+    }
+    showOutput(`✅ Carga progresiva finalizada.`);
+};
+// -----------------------------------------------------
+
+initialize();
 
     // --- PUNTO DE INICIO ---
     const initialize = () => {
@@ -458,6 +495,6 @@ const child = document.getElementById("p1");
 parent.replaceChild(para, child);
 </script>
 
-
+<script src="logica.js"></script>
 </body>
 </html>
