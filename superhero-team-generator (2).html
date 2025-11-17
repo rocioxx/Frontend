@@ -437,7 +437,7 @@ ${currentTeam
     initialize();
   </script>
 
-  
+
  <div id="div1">
   <p id="p1">This is a paragraph.</p>
   <p id="p2">This is another paragraph.</p>
@@ -452,7 +452,14 @@ const element = document.getElementById("div1");
 const child = document.getElementById("p1");
 element.insertBefore(para, child);
 </script>
+<div>
+  <p id="p1">This is a paragraph.</p>
+  <p id="p2">This is another paragraph.</p>
+</div>
 
+<script>
+const elmnt = document.getElementById("p1"); elmnt.remove();
+</script>
 
 </body>
 </html>
