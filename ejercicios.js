@@ -221,6 +221,50 @@ const showTeamStats = () => {
 };
 // ------------------------------------
 
+// --- NUEVA FUNCIÓN PARA INSPECCIONAR PROPIEDADES DEL DOM ---
+const inspectDOM = () => {
+    // 1. Obtiene colecciones (Formularios, Enlaces, Scripts, Imágenes)
+    const forms = document.forms;
+    const links = document.links;
+    const scripts = document.scripts;
+
+    // Prepara la información del primer formulario (si existe)
+    const formInfo = forms.length > 0 
+        ? `ID: ${forms[0].id || 'N/A'} | Método: ${forms[0].method}`
+        : 'No se encontraron formularios.';
+
+    // Prepara la información del primer enlace (si existe)
+    const linkInfo = links.length > 0 
+        ? `Href: ${links[0].href} | Clases: ${links[0].classList.value}`
+        : 'No se encontraron enlaces (links) con href.';
+
+    // Prepara la información del primer script
+    const scriptInfo = scripts.length > 0 
+        ? `Total: ${scripts.length} | Primer SRC: ${scripts[0].src || 'Interno/En línea'}`
+        : 'No se encontraron scripts.';
+        
+    // 2. document.body y document.domain
+    // Muestra solo las primeras tres clases del body
+    const bodyClass = document.body.className.split(' ').slice(0, 3).join(' ') + '...';
+    const domain = document.domain;
+
+    // 3. Compila el mensaje para la consola de salida
+    const outputMessage = `🔍 INSPECCIÓN DE PROPIEDADES DOM:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🌐 Dominio: ${domain}
+📄 Total de elementos (document.all): ${document.all.length}
+----------------------------------
+👤 Elemento Body (Clases): ${bodyClass}
+🔗 Primer Link: ${linkInfo}
+📝 Scripts: ${scriptInfo}
+⚙️ Formularios: ${forms.length} (${formInfo})
+🖼️ Imágenes: ${document.images.length}`;
+
+    // Muestra el resultado en la Consola de Superhéroes
+    showOutput(outputMessage);
+};
+// -----------------------------------------------------------
+
 // --- LÓGICA DE FILTROS (Activada por evento 'change') ---
 const checkLevelRange = (level, range) => {
     switch(range) {
