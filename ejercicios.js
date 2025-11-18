@@ -54,7 +54,7 @@ const createHeroCard = (hero) => {
 
     return `
         <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 ${borderColor} border-2 p-6 cursor-pointer group"
-                    onclick="toggleHeroInTeam('${hero.name}')">
+                            onclick="toggleHeroInTeam('${hero.name}')">
             <div class="text-center mb-4">
                 <div class="text-6xl mb-2 group-hover:animate-bounce-slow">${hero.emoji}</div>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">${hero.name}</h3>
@@ -221,34 +221,27 @@ const showTeamStats = () => {
 };
 // ------------------------------------
 
-// --- NUEVA FUNCIÓN PARA INSPECCIONAR PROPIEDADES DEL DOM ---
+// --- FUNCIÓN PARA INSPECCIONAR PROPIEDADES DEL DOM ---
 const inspectDOM = () => {
-    // 1. Obtiene colecciones (Formularios, Enlaces, Scripts, Imágenes)
     const forms = document.forms;
     const links = document.links;
     const scripts = document.scripts;
 
-    // Prepara la información del primer formulario (si existe)
     const formInfo = forms.length > 0 
         ? `ID: ${forms[0].id || 'N/A'} | Método: ${forms[0].method}`
         : 'No se encontraron formularios.';
 
-    // Prepara la información del primer enlace (si existe)
     const linkInfo = links.length > 0 
         ? `Href: ${links[0].href} | Clases: ${links[0].classList.value}`
         : 'No se encontraron enlaces (links) con href.';
 
-    // Prepara la información del primer script
     const scriptInfo = scripts.length > 0 
         ? `Total: ${scripts.length} | Primer SRC: ${scripts[0].src || 'Interno/En línea'}`
         : 'No se encontraron scripts.';
         
-    // 2. document.body y document.domain
-    // Muestra solo las primeras tres clases del body
     const bodyClass = document.body.className.split(' ').slice(0, 3).join(' ') + '...';
     const domain = document.domain;
 
-    // 3. Compila el mensaje para la consola de salida
     const outputMessage = `🔍 INSPECCIÓN DE PROPIEDADES DOM:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🌐 Dominio: ${domain}
@@ -260,7 +253,6 @@ const inspectDOM = () => {
 ⚙️ Formularios: ${forms.length} (${formInfo})
 🖼️ Imágenes: ${document.images.length}`;
 
-    // Muestra el resultado en la Consola de Superhéroes
     showOutput(outputMessage);
 };
 // -----------------------------------------------------------
@@ -276,7 +268,6 @@ const checkLevelRange = (level, range) => {
     }
 };
 
-// Esta función es llamada por el evento 'change'
 const filterHeroes = () => {
     const powerFilter = document.getElementById('powerFilter').value;
     const levelFilter = document.getElementById('levelFilter').value;
@@ -296,6 +287,7 @@ const filterHeroes = () => {
 const showOutput = (message) => {
     const output = document.getElementById('output');
     const outputContent = document.getElementById('outputContent');
+    if (!output || !outputContent) return; // Protección
     output.classList.remove('hidden');
     outputContent.textContent = message;
 };
@@ -305,6 +297,8 @@ const showTeamSummary = (teamName) => {
     const content = document.getElementById('teamSummaryContent');
     const stats = calculateTeamStats();
     
+    if (!summary || !content) return; // Protección
+
     if (!stats || stats.memberCount === 0) { 
         summary.classList.add('hidden');
         return;
@@ -345,18 +339,25 @@ const showTeamSummary = (teamName) => {
 
 const updateDisplay = () => {
     const heroGrid = document.getElementById('heroGrid');
-    heroGrid.innerHTML = filteredHeroes.map(createHeroCard).join('');
+    if (heroGrid) {
+        heroGrid.innerHTML = filteredHeroes.map(createHeroCard).join('');
+    }
     showTeamSummary(currentTeam.length > 0 ? 'Equipo Actual' : 'No hay equipo');
 };
 // ------------------------------------
 
-// --- FUNCIONES ASÍNCRONAS PARA CARGA PROGRESIVA ---
+// --- FUNCIONES ASÍNCRONAS PARA CARGA PROGRESIVA (CREACIÓN DE NODOS) ---
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
 
 const generateProgressiveGrid = async () => {
     const gridContainer = document.getElementById('progressiveGrid');
+    if (!gridContainer) {
+        // showOutput('❌ ERROR: Contenedor #progressiveGrid no encontrado.');
+        return; 
+    }
+    
     const colors = ['bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-purple-500'];
     const totalCells = 20;
     const size = 'w-10 h-10';
@@ -365,6 +366,7 @@ const generateProgressiveGrid = async () => {
     showOutput(`⏳ Iniciando carga progresiva de ${totalCells} celdas...`);
 
     for (let i = 0; i < totalCells; i++) {
+        // CREACIÓN DE NODO: document.createElement() y appendChild()
         const cell = document.createElement('div');
         const colorClass = colors[i % colors.length];
         cell.className = `${size} ${colorClass} transition-all duration-100 ease-in-out transform hover:scale-125`;
@@ -375,36 +377,31 @@ const generateProgressiveGrid = async () => {
 };
 // -----------------------------------------------------
 
-// --- NUEVA LÓGICA DE EVENTOS (onmouseover, onmousedown) ---
+// --- LÓGICA DE EVENTOS (onmouseover, onmousedown) ---
 const animateOnMouse = (event) => {
-    const target = event.target;
-    // Asegura que solo el contenedor principal reaccione
-    if (target.id !== 'eventBox') return; 
+    const target = event.currentTarget; // Usamos currentTarget ya que los eventos se asignan al div
+    if (!target) return;
 
     if (event.type === 'mouseover') {
-        // onmouseover
         target.classList.remove('bg-yellow-400', 'scale-100');
         target.classList.add('bg-pink-500', 'scale-110');
         showOutput(`👆 Evento MOUSE-OVER activado.`);
     } else if (event.type === 'mouseout') {
-        // Al salir del ratón
-        target.classList.remove('bg-pink-500', 'scale-110', 'border-8', 'border-red-700', 'bg-red-300'); // Revierte todos los cambios
+        target.classList.remove('bg-pink-500', 'scale-110', 'border-8', 'border-red-700', 'bg-red-300');
         target.classList.add('bg-yellow-400', 'scale-100');
         showOutput(`➡️ Evento MOUSE-OUT activado.`);
     } else if (event.type === 'mousedown') {
-        // onmousedown
         target.classList.add('border-8', 'border-red-700', 'bg-red-300');
         showOutput(`⬇️ Evento MOUSE-DOWN activado en la caja.`);
     } else if (event.type === 'mouseup') {
-        // Al soltar el click (revierte mousedown)
         target.classList.remove('border-8', 'border-red-700', 'bg-red-300');
         showOutput(`⬆️ Evento MOUSE-UP (soltar click) activado.`);
     }
 };
 
-// --- PUNTO DE INICIO Y ASIGNACIÓN DE EVENTOS (Reemplaza el initialize() duplicado) ---
+// --- PUNTO DE INICIO Y ASIGNACIÓN DE EVENTOS ---
 const initialize = async () => {
-    // 1. Carga progresiva (async)
+    // 1. Carga progresiva (async) - Crea los nodos dinámicamente
     await generateProgressiveGrid(); 
     
     // 2. Carga del equipo y display
@@ -413,7 +410,7 @@ const initialize = async () => {
 
     // 3. ASIGNACIÓN DE EVENTOS con addEventListener
     
-    // a) Eventos de Ratón (onmouseover, onmouseout, onmousedown, onmouseup)
+    // a) Eventos de Ratón
     const eventBox = document.getElementById('eventBox');
     if (eventBox) {
         eventBox.addEventListener('mouseover', animateOnMouse);
@@ -426,7 +423,6 @@ const initialize = async () => {
     const powerFilter = document.getElementById('powerFilter');
     const levelFilter = document.getElementById('levelFilter');
     
-    // Llama a filterHeroes cuando el valor del select cambie (onchange)
     if (powerFilter) powerFilter.addEventListener('change', filterHeroes);
     if (levelFilter) levelFilter.addEventListener('change', filterHeroes);
 };
