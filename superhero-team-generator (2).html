@@ -31,7 +31,7 @@
             <h2 class="text-2xl font-bold text-gray-700 mb-4">🧪 Prueba de Eventos de Ratón</h2>
             <div id="eventBox" 
                  class="w-64 h-20 mx-auto bg-yellow-400 rounded-lg shadow-xl flex items-center justify-center 
-                        text-white font-bold text-lg transition-all duration-300 transform scale-100"
+                         text-white font-bold text-lg transition-all duration-300 transform scale-100"
                  title="Pasa el ratón, haz click y mira la Consola de Superhéroes.">
                 Interactúa Aquí (Mouse Events)
             </div>
@@ -44,15 +44,15 @@
                 </h3>
                 <div class="space-y-3">
                     <button onclick="generateRandomTeam()" 
-                              class="w-full bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-600 hover:to-sky-600 text-white font-bold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg">
+                             class="w-full bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-600 hover:to-sky-600 text-white font-bold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg">
                         🎲 Generar Equipo Aleatorio
                     </button>
                     <button onclick="analyzeCurrentTeam()" 
-                              class="w-full bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white font-bold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg">
+                             class="w-full bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white font-bold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg">
                         📈 Analizar Equipo
                     </button>
                     <button onclick="clearTeam()" 
-                              class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg">
+                             class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg">
                         🗑️ Limpiar Equipo
                     </button>
                 </div>
@@ -64,7 +64,7 @@
                 </h3>
                 <div class="space-y-3">
                     <select id="powerFilter" 
-                              class="w-full p-3 border-2 border-emerald-200 rounded-xl focus:border-emerald-400 focus:outline-none bg-white shadow-sm">
+                             class="w-full p-3 border-2 border-emerald-200 rounded-xl focus:border-emerald-400 focus:outline-none bg-white shadow-sm">
                         <option value="">Todos los poderes</option>
                         <option value="Fuerza">💪 Fuerza</option>
                         <option value="Velocidad">⚡ Velocidad</option>
@@ -73,7 +73,7 @@
                         <option value="Invisibilidad">👻 Invisibilidad</option>
                     </select>
                     <select id="levelFilter" 
-                              class="w-full p-3 border-2 border-emerald-200 rounded-xl focus:border-emerald-400 focus:outline-none bg-white shadow-sm">
+                             class="w-full p-3 border-2 border-emerald-200 rounded-xl focus:border-emerald-400 focus:outline-none bg-white shadow-sm">
                         <option value="">Todos los niveles</option>
                         <option value="elite">👑 Élite (85+)</option> <option value="high">🔥 Alto (70-84)</option>
                         <option value="medium">⚖️ Medio (50-69)</option>
@@ -83,28 +83,27 @@
             </div>
 
             <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-2xl border-2 border-indigo-100 hover:shadow-lg transition-all duration-300">
-    <h3 class="text-xl font-bold text-indigo-700 mb-4 flex items-center">
-        <span class="mr-2">⚡</span> Acciones Avanzadas
-    </h3>
-    <div class="space-y-3">
-        <button onclick="findStrongestHero()" 
-                  class="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white font-bold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg">
-            💪 Héroe Más Fuerte
-        </button>
-        <button onclick="createSuperTeam()" 
-                  class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-bold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg">
-            ⭐ Equipo Elite
-        </button>
-        <button onclick="showTeamStats()" 
-                  class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg">
-            📊 Ver Estadísticas
-        </button>
-        <button onclick="inspectDOM()" 
-                  class="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg">
-            🔍 Inspeccionar DOM (Lectura)
-        </button>
-    </div>
-</div>
+                <h3 class="text-xl font-bold text-indigo-700 mb-4 flex items-center">
+                    <span class="mr-2">⚡</span> Acciones Avanzadas
+                </h3>
+                <div class="space-y-3">
+                    <button onclick="findStrongestHero()" 
+                            class="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white font-bold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg">
+                        💪 Héroe Más Fuerte
+                    </button>
+                    <button onclick="createSuperTeam()" 
+                            class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-bold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg">
+                        ⭐ Equipo Elite
+                    </button>
+                    <button onclick="showTeamStats()" 
+                            class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg">
+                        📊 Ver Estadísticas
+                    </button>
+                    <button onclick="inspectDOM()" 
+                            class="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold py-3 px-4 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg">
+                        🔍 Inspeccionar DOM (Lectura)
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -115,7 +114,7 @@
         </div>
         
         <div id="progressiveGrid" class="flex flex-wrap max-w-lg mx-auto mb-8 border-4 border-white shadow-2xl rounded-xl">
-            </div>
+        </div>
 
         <div id="heroGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8"></div>
 
@@ -134,6 +133,6 @@
         </div>
     </div>
 
-    <script src="logica.js"></script>
+    <script src="logica.js"></script> 
 </body>
 </html>
