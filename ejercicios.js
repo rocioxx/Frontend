@@ -119,28 +119,34 @@ const clearTeam = () => {
     currentTeam = [];
     localStorage.removeItem(TEAM_STORAGE_KEY);
     updateDisplay();
-    document.getElementById('teamSummary').classList.add('hidden');
+    const summary = document.getElementById('teamSummary');
+    if (summary) summary.classList.add('hidden');
     showOutput(`🗑️ Equipo limpiado`);
 };
 
 const calculateTeamStats = () => {
     if (currentTeam.length === 0) return null;
-    return currentTeam.reduce((stats, hero) => ({
-        totalPower: stats.totalPower + hero.level,
-        avgPower: Math.round((stats.totalPower + hero.level) / currentTeam.length),
-        maxPower: Math.max(stats.maxPower, hero.level),
-        minPower: Math.min(stats.minPower, hero.level),
-        memberCount: currentTeam.length 
-    }), {
+    const initialStats = {
         totalPower: 0,
         avgPower: 0,
         maxPower: 0,
-        minPower: 100
-    });
+        minPower: 100,
+        memberCount: currentTeam.length
+    };
+
+    const finalStats = currentTeam.reduce((stats, hero) => ({
+        totalPower: stats.totalPower + hero.level,
+        maxPower: Math.max(stats.maxPower, hero.level),
+        minPower: Math.min(stats.minPower, hero.level),
+        // No calcular el promedio aquí, se hace al final
+    }), initialStats);
+
+    finalStats.avgPower = Math.round(finalStats.totalPower / finalStats.memberCount);
+    return finalStats;
 };
 // ------------------------------------
 
-// --- LÓGICA DE ACCIONES PRINCIPALES ---
+// --- LÓGICA DE ACCIONES PRINCIPALES (Botones) ---
 const generateRandomTeam = () => {
     currentTeam = [];
     const teamSize = Math.floor(Math.random() * 3) + 3;
@@ -219,9 +225,8 @@ const showTeamStats = () => {
 📉 Nivel Mín: ${stats.minPower}`;
     showOutput(statsText);
 };
-// ------------------------------------
 
-// --- FUNCIÓN PARA INSPECCIONAR PROPIEDADES DEL DOM ---
+// --- FUNCIÓN PARA INSPECCIONAR PROPIEDADES DEL DOM (Nuevo botón) ---
 const inspectDOM = () => {
     const forms = document.forms;
     const links = document.links;
@@ -257,7 +262,7 @@ const inspectDOM = () => {
 };
 // -----------------------------------------------------------
 
-// --- LÓGICA DE FILTROS (Activada por evento 'change') ---
+// --- LÓGICA DE FILTROS (onchange) ---
 const checkLevelRange = (level, range) => {
     switch(range) {
         case 'elite': return level >= 85; 
@@ -269,17 +274,22 @@ const checkLevelRange = (level, range) => {
 };
 
 const filterHeroes = () => {
-    const powerFilter = document.getElementById('powerFilter').value;
-    const levelFilter = document.getElementById('levelFilter').value;
+    const powerFilter = document.getElementById('powerFilter');
+    const levelFilter = document.getElementById('levelFilter');
+
+    if (!powerFilter || !levelFilter) return; // Protección
+
+    const powerValue = powerFilter.value;
+    const levelValue = levelFilter.value;
 
     filteredHeroes = HERO_DATABASE.filter(hero => {
-        const powerMatch = !powerFilter || hero.power === powerFilter;
-        const levelMatch = !levelFilter || checkLevelRange(hero.level, levelFilter);
+        const powerMatch = !powerValue || hero.power === powerValue;
+        const levelMatch = !levelValue || checkLevelRange(hero.level, levelValue);
         return powerMatch && levelMatch;
     });
 
     updateDisplay();
-    showOutput(`🔍 Filtrados: ${filteredHeroes.length} héroes encontrados (onchange ejecutado)`);
+    showOutput(`🔍 Filtrados: ${filteredHeroes.length} héroes encontrados`);
 };
 // ------------------------------------
 
@@ -287,7 +297,8 @@ const filterHeroes = () => {
 const showOutput = (message) => {
     const output = document.getElementById('output');
     const outputContent = document.getElementById('outputContent');
-    if (!output || !outputContent) return; // Protección
+    // Protección crítica: Si los elementos de salida no existen, salimos
+    if (!output || !outputContent) return; 
     output.classList.remove('hidden');
     outputContent.textContent = message;
 };
@@ -295,10 +306,11 @@ const showOutput = (message) => {
 const showTeamSummary = (teamName) => {
     const summary = document.getElementById('teamSummary');
     const content = document.getElementById('teamSummaryContent');
-    const stats = calculateTeamStats();
     
     if (!summary || !content) return; // Protección
 
+    const stats = calculateTeamStats();
+    
     if (!stats || stats.memberCount === 0) { 
         summary.classList.add('hidden');
         return;
@@ -346,18 +358,15 @@ const updateDisplay = () => {
 };
 // ------------------------------------
 
-// --- FUNCIONES ASÍNCRONAS PARA CARGA PROGRESIVA (CREACIÓN DE NODOS) ---
+// --- FUNCIONES ASÍNCRONAS PARA CARGA PROGRESIVA (Creación de Nodos) ---
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
 
 const generateProgressiveGrid = async () => {
     const gridContainer = document.getElementById('progressiveGrid');
-    if (!gridContainer) {
-        // showOutput('❌ ERROR: Contenedor #progressiveGrid no encontrado.');
-        return; 
-    }
-    
+    if (!gridContainer) return; // Protección
+
     const colors = ['bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-purple-500'];
     const totalCells = 20;
     const size = 'w-10 h-10';
@@ -366,7 +375,6 @@ const generateProgressiveGrid = async () => {
     showOutput(`⏳ Iniciando carga progresiva de ${totalCells} celdas...`);
 
     for (let i = 0; i < totalCells; i++) {
-        // CREACIÓN DE NODO: document.createElement() y appendChild()
         const cell = document.createElement('div');
         const colorClass = colors[i % colors.length];
         cell.className = `${size} ${colorClass} transition-all duration-100 ease-in-out transform hover:scale-125`;
@@ -379,7 +387,7 @@ const generateProgressiveGrid = async () => {
 
 // --- LÓGICA DE EVENTOS (onmouseover, onmousedown) ---
 const animateOnMouse = (event) => {
-    const target = event.currentTarget; // Usamos currentTarget ya que los eventos se asignan al div
+    const target = event.currentTarget;
     if (!target) return;
 
     if (event.type === 'mouseover') {
