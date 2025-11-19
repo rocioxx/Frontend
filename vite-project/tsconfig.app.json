@@ -16,6 +16,13 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Alias de ruta añadidos para shadcn/ui */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    /* Fin de alias de ruta añadidos */
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
