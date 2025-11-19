@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Scraping - Ofertas de Productos (Nivel Básico)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .product-card { max-height: 250px; overflow-y: hidden; }
+        .product-list-container { max-height: 500px; overflow-y: auto; }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-2xl">
+        <h1 class="text-3xl font-bold mb-6 text-indigo-700">🛒 Herramienta de Scraping de Ofertas</h1>
+        
+        <p class="mb-4 text-gray-600">
+            **INSTRUCCIONES:** <ol class="list-decimal ml-5 space-y-1">
+                <li>Abre la página web de ofertas (ej. Amazon Deals) en esta misma pestaña del navegador.</li>
+                <li>Recarga la página para asegurar que el DOM esté listo.</li>
+                <li>Presiona el botón "Ejecutar Scraping".</li>
+                <li>Los datos se guardarán en <code class="bg-yellow-100 p-1 rounded">IndexedDB</code>.</li>
+            </ol>
+        </p>
+
+        <div class="flex space-x-4 mb-8">
+            <button onclick="scrapeSite('amazonDeals')" 
+                    class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300 font-semibold">
+                ▶️ Ejecutar Scraping (DOM)
+            </button>
+            <button onclick="loadAndDisplayProducts()" 
+                    class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">
+                💾 Mostrar Productos Guardados
+            </button>
+        </div>
+
+        <h2 class="text-2xl font-semibold mb-4 text-gray-700">Resultados Guardados (<span id="productCount">0</span>)</h2>
+        <div id="resultsOutput" class="product-list-container space-y-3 bg-gray-50 p-4 rounded-lg border">
+            <p class="text-gray-500">Presiona "Mostrar Productos Guardados" para ver los datos de IndexedDB.</p>
+        </div>
+    </div>
+
+    <script type="module">
+        // Importamos las funciones necesarias
+        import { scrapeSite } from './scraper.js';
+        import { getAllProducts } from './db.js';
+
+        // Hacemos la función de scraping accesible globalmente para el botón onclick
+        window.scrapeSite = scrapeSite;
+        
+        // Función para leer y renderizar los datos de IndexedDB
+        window.loadAndDisplayProducts = async () => {
+            const products = await getAllProducts();
+            const output = document.getElementById('resultsOutput');
+            const count = document.getElementById('productCount');
+            
+            count.textContent = products.length;
+            output.innerHTML = '';
+
+            if (products.length === 0) {
+                output.innerHTML = '<p class="text-gray-500">No hay productos guardados en la base de datos.</p>';
+                return;
+            }
+
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card bg-white p-3 rounded-lg shadow border border-gray-200 hover:border-indigo-400 transition';
+                card.innerHTML = `
+                    <p class="font-bold text-lg text-indigo-800">${p.articulo || 'N/A'}</p>
+                    <p class="text-green-600 font-bold">Precio: ${p.precio.toFixed(2)} €</p>
+                    <p class="text-sm text-gray-500 truncate">URL: <a href="${p.url}" target="_blank" class="text-blue-500">${p.url}</a></p>
+                    <p class="text-xs text-gray-400">Guardado el: ${new Date(p.fecha_scraping).toLocaleDateString()}</p>
+                `;
+                output.appendChild(card);
+            });
+        };
+    </script>
+</body>
+</html>
