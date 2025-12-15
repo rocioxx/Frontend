@@ -1,4 +1,4 @@
-// Type shim for @tanstack/react-query to allow development without node_modules
+
 declare module '@tanstack/react-query' {
   export interface UseQueryOptions<T = any, E = any> {
     queryKey: any[]

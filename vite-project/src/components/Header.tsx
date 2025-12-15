@@ -23,7 +23,7 @@ export default function Header() {
           <Link to="/Settings">Settings</Link>
         </div>
         <div className="actions">
-          <button onClick={() => setOpen((v) => !v)} aria-pressed={isSidebarVisible}>
+          <button onClick={() => setOpen((v: any) => !v)} aria-pressed={isSidebarVisible}>
             {isSidebarVisible ? 'Ocultar menú' : 'Mostrar menú'}
           </button>
           <button onClick={() => toggleSidebarFixed()} title="Alternar fijo/dinámico">

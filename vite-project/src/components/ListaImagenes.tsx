@@ -56,7 +56,7 @@ export default function ListaImagenes() {
 
       {imagenes && imagenes.length === 0 && !isLoading && (
         <div className="estado-vacio">
-          <p>📸 No se encontraron imágenes para "{searchQuery}"</p>
+          <p> No se encontraron imágenes para "{searchQuery}"</p>
         </div>
       )}
     </div>

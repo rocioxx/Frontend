@@ -1,4 +1,4 @@
-import { ImagenAdaptada } from '../adapters/imagenesAdapter'
+import type { ImagenAdaptada } from '../adapters/imagenesAdapter'
 
 interface TarjetaImagenProps {
   imagen: ImagenAdaptada
@@ -17,7 +17,7 @@ export default function TarjetaImagen({ imagen }: TarjetaImagenProps) {
         <div className="tarjeta-imagen-overlay">
           <div className="tarjeta-imagen-info">
             <p className="tarjeta-imagen-descripcion">{imagen.descripcion}</p>
-            <p className="tarjeta-imagen-fotografo">📸 {imagen.fotografo}</p>
+            <p className="tarjeta-imagen-fotografo"> {imagen.fotografo}</p>
           </div>
         </div>
       </div>

@@ -1,5 +1,4 @@
-// Minimal React type shims to allow editing and type checking without installed @types/react
-// This is a temporary shim for development when node_modules may not be installed.
+
 
 declare module 'react' {
   const React: any
