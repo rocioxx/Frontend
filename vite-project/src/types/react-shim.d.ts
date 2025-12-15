@@ -24,3 +24,8 @@ declare namespace JSX {
     [key: string]: any
   }
 }
+
+declare module '*.css' {
+  const content: any
+  export default content
+}

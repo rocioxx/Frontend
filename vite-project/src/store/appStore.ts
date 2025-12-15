@@ -43,7 +43,7 @@ export const appStore = createStore<AppState>(loadInitialState())
 
 // Setters / helpers
 export const setSidebarFixed = (value: boolean) => {
-  appStore.setState((state) => {
+  appStore.setState((state: AppState) => {
     const newState = { ...state, sidebarFixed: value }
     saveToLocalStorage(newState)
     return newState
@@ -51,7 +51,7 @@ export const setSidebarFixed = (value: boolean) => {
 }
 
 export const toggleSidebarFixed = () => {
-  appStore.setState((state) => {
+  appStore.setState((state: AppState) => {
     const newState = { ...state, sidebarFixed: !state.sidebarFixed }
     saveToLocalStorage(newState)
     return newState
@@ -59,7 +59,7 @@ export const toggleSidebarFixed = () => {
 }
 
 export const setTheme = (theme: Theme) => {
-  appStore.setState((state) => {
+  appStore.setState((state: AppState) => {
     const newState = { ...state, theme }
     saveToLocalStorage(newState)
     return newState
@@ -68,7 +68,7 @@ export const setTheme = (theme: Theme) => {
 
 export const addTask = (task: string) => {
   if (!task.trim()) return
-  appStore.setState((state) => {
+  appStore.setState((state: AppState) => {
     const newState = { ...state, listaTareas: [...state.listaTareas, task] }
     saveToLocalStorage(newState)
     return newState
@@ -76,10 +76,10 @@ export const addTask = (task: string) => {
 }
 
 export const removeTaskAt = (index: number) => {
-  appStore.setState((state) => {
+  appStore.setState((state: AppState) => {
     const newState = {
       ...state,
-      listaTareas: state.listaTareas.filter((_, i) => i !== index),
+      listaTareas: state.listaTareas.filter((_: string, i: number) => i !== index)
     }
     saveToLocalStorage(newState)
     return newState
@@ -87,7 +87,7 @@ export const removeTaskAt = (index: number) => {
 }
 
 export const clearTasks = () => {
-  appStore.setState((state) => {
+  appStore.setState((state: AppState) => {
     const newState = { ...state, listaTareas: [] }
     saveToLocalStorage(newState)
     return newState
