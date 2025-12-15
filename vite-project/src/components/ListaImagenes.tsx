@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useImages } from '../hooks/useImages'
 import TarjetaImagen from './TarjetaImagen'
+import '../styles/imagenes.css'
 
 export default function ListaImagenes() {
   const [searchQuery, setSearchQuery] = useState('Tigers')

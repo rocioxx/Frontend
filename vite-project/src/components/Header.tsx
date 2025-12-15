@@ -19,6 +19,7 @@ export default function Header() {
           <Link to="/Hola">Hola</Link>
           <Link to="/Adios">Adios</Link>
           <Link to="/Tasks">Tasks</Link>
+          <Link to="/Imagenes">Imagenes</Link>
           <Link to="/Settings">Settings</Link>
         </div>
         <div className="actions">
@@ -37,6 +38,7 @@ export default function Header() {
           <li><Link to="/Hola">Hola</Link></li>
           <li><Link to="/Adios">Adios</Link></li>
           <li><Link to="/Tasks">Tasks</Link></li>
+          <li><Link to="/Imagenes">Imagenes</Link></li>
           <li><Link to="/Settings">Settings</Link></li>
         </ul>
       </aside>
