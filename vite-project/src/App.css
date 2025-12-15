@@ -40,3 +40,71 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Theme utilities */
+body.theme-light {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+body.theme-dark {
+  background: #0b1220;
+  color: #e6eef8;
+}
+
+/* Header and layout */
+.app-header {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+}
+.topbar .links a {
+  margin-right: 0.5rem;
+  text-decoration: none;
+}
+.topbar .actions {
+  margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
+}
+.sidebar {
+  padding: 1rem;
+  transition: transform 200ms ease, opacity 200ms ease;
+}
+.sidebar.hidden {
+  transform: translateX(-110%);
+  opacity: 0;
+}
+.sidebar.visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+.sidebar.fixed {
+  position: relative;
+}
+.sidebar.floating {
+  position: absolute;
+  z-index: 50;
+  left: 0;
+  top: 56px;
+  background: rgba(255,255,255,0.9);
+  border-right: 1px solid rgba(0,0,0,0.06);
+}
+
+.app-main {
+  padding: 1.25rem;
+}
+
+.page { max-width: 900px; margin: 1rem auto; }
+
+.task-list li { display:flex; gap: 1rem; align-items:center; }
+
+/* Simple dark mode overrides */
+body.theme-dark .sidebar.floating { background: rgba(10,14,20,0.9); border-color: rgba(255,255,255,0.06); }
+body.theme-dark .topbar, body.theme-dark .sidebar { color: #e6eef8 }

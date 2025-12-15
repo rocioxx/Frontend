@@ -43,6 +43,26 @@ export default defineConfig([
 ])
 ```
 
+---
+
+## Añadidos para el ejercicio: TanStack Store y Rutas
+
+Este proyecto incluye una implementación de ejemplo para usar `@tanstack/react-store` y `react-router-dom`.
+
+- Nuevo store: `src/store/appStore.ts` — contiene el estado de la app (sidebar fijo, theme, lista de tareas) y funciones exportables `setTheme`, `setSidebarFixed`, `addTask`, etc.
+- Componentes de páginas: `src/pages/Settings.tsx`, `src/pages/Tasks.tsx`, `src/pages/Hola.tsx`, `src/pages/Adios.tsx`.
+- `src/components/Header.tsx` muestra un menú lateral que puede ser fijo o dinámico según el store.
+
+Para ejecutar localmente instala las dependencias y arranca el dev server:
+
+```powershell
+cd vite-project
+npm install
+npm run dev
+```
+
+Nota: En este entorno no se pudo ejecutar `npm install` automáticamente; añade las dependencias declaradas en `package.json` con `npm install` localmente.
+
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
