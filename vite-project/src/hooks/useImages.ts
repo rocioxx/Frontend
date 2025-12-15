@@ -1,6 +1,8 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 import { fetchImagenesFromPexels } from '../api/imagenesPexel'
-import { adaptarFotosPexels, ImagenAdaptada } from '../adapters/imagenesAdapter'
+import { adaptarFotosPexels } from '../adapters/imagenesAdapter'
+import type { ImagenAdaptada } from '../adapters/imagenesAdapter'
 
 interface UseImagesOptions {
   query?: string
