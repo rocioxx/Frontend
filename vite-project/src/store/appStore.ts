@@ -8,37 +8,88 @@ export type AppState = {
   listaTareas: string[]
 }
 
-export const appStore = createStore<AppState>({
-  sidebarFixed: false,
-  theme: 'light',
-  listaTareas: [],
-})
+// Load from localStorage or use defaults
+const loadInitialState = (): AppState => {
+  try {
+    const saved = localStorage.getItem('appState')
+    if (saved) {
+      const parsed = JSON.parse(saved)
+      return {
+        sidebarFixed: parsed.sidebarFixed ?? false,
+        theme: (parsed.theme === 'dark' ? 'dark' : 'light') as Theme,
+        listaTareas: Array.isArray(parsed.listaTareas) ? parsed.listaTareas : [],
+      }
+    }
+  } catch {
+    // Silently fail if localStorage is not available or JSON is corrupted
+  }
+  return {
+    sidebarFixed: false,
+    theme: 'light',
+    listaTareas: [],
+  }
+}
+
+// Save to localStorage whenever state changes
+const saveToLocalStorage = (state: AppState) => {
+  try {
+    localStorage.setItem('appState', JSON.stringify(state))
+  } catch {
+    // Silently fail if localStorage is not available
+  }
+}
+
+export const appStore = createStore<AppState>(loadInitialState())
 
 // Setters / helpers
 export const setSidebarFixed = (value: boolean) => {
-  appStore.setState((state) => ({ ...state, sidebarFixed: value }))
+  appStore.setState((state) => {
+    const newState = { ...state, sidebarFixed: value }
+    saveToLocalStorage(newState)
+    return newState
+  })
 }
 
 export const toggleSidebarFixed = () => {
-  appStore.setState((state) => ({ ...state, sidebarFixed: !state.sidebarFixed }))
+  appStore.setState((state) => {
+    const newState = { ...state, sidebarFixed: !state.sidebarFixed }
+    saveToLocalStorage(newState)
+    return newState
+  })
 }
 
 export const setTheme = (theme: Theme) => {
-  appStore.setState((state) => ({ ...state, theme }))
+  appStore.setState((state) => {
+    const newState = { ...state, theme }
+    saveToLocalStorage(newState)
+    return newState
+  })
 }
 
 export const addTask = (task: string) => {
   if (!task.trim()) return
-  appStore.setState((state) => ({ ...state, listaTareas: [...state.listaTareas, task] }))
+  appStore.setState((state) => {
+    const newState = { ...state, listaTareas: [...state.listaTareas, task] }
+    saveToLocalStorage(newState)
+    return newState
+  })
 }
 
 export const removeTaskAt = (index: number) => {
-  appStore.setState((state) => ({
-    ...state,
-    listaTareas: state.listaTareas.filter((_, i) => i !== index),
-  }))
+  appStore.setState((state) => {
+    const newState = {
+      ...state,
+      listaTareas: state.listaTareas.filter((_, i) => i !== index),
+    }
+    saveToLocalStorage(newState)
+    return newState
+  })
 }
 
 export const clearTasks = () => {
-  appStore.setState((state) => ({ ...state, listaTareas: [] }))
+  appStore.setState((state) => {
+    const newState = { ...state, listaTareas: [] }
+    saveToLocalStorage(newState)
+    return newState
+  })
 }
